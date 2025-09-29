@@ -5,7 +5,6 @@
 ### Tối ưu trong code của bạn
 - **JPEG thay vì PNG** → giảm dung lượng truyền, tiết kiệm băng thông.  
 - **Scale ảnh trước khi encode** → ít pixel hơn, encode nhanh hơn, file nhỏ hơn.  
-- **Encode 1 lần rồi broadcast** → giảm tải CPU khi có nhiều client.  
 - **Giữ `DataOutputStream`** → tránh tạo lại nhiều lần, giảm overhead.  
 - **Log chi tiết (capture, scale, encode, FPS)** → dễ xác định bottleneck để tối ưu.  
 
@@ -14,9 +13,8 @@
 ## 2. Client (ScreenClient)
 
 ### Tối ưu trong code của bạn
+- **Bỏ scale ở client, chỉ scale ở server** → client nhận frame đã xử lý, giảm tải CPU, hiển thị nhanh hơn.  
 - **Tách riêng `JPanel` + override `paintComponent`** → tận dụng double-buffer, hình ảnh mượt hơn, không nháy.  
 - **Thread riêng để nhận dữ liệu** → không block UI, giao diện luôn phản hồi.  
 - **Sử dụng `BufferedInputStream` với buffer lớn** → tăng tốc độ đọc frame.  
 - **Log FPS, decode time, frame size** → theo dõi hiệu năng, hỗ trợ tối ưu.  
-
-image.png---
