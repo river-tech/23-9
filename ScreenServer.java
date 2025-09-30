@@ -21,11 +21,13 @@ public class ScreenServer {
         System.out.println("ScreenServer");
         Screen s = new Screen();
         s.start();
-        try (ServerSocket server = new ServerSocket(2345)) {
+        int countClient = 0;
+        try (ServerSocket server = new ServerSocket(2345, 50, InetAddress.getByName("172.16.1.3"))) {
             System.out.println("[SERVER] Listening on port 2345...");
             while (true) {
                 Socket soc = server.accept();
-                // System.out.println("[SERVER] Client connected: " + soc.getInetAddress());
+                countClient++;
+                System.out.println("[SERVER] Client connected: " + soc.getInetAddress() + " - " + countClient);
                 // ScreenProcessing sp = new ScreenProcessing(soc);
                 // sp.start();
                 ClientManager.addClient(soc);
