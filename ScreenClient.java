@@ -54,7 +54,7 @@ public class ScreenClient extends JFrame {
         setVisible(true);
 
         try {
-            soc = new Socket("localhost", 2345);
+            soc = new Socket("172.16.1.3", 2345);
             System.out.println("[CLIENT] Connected to server.");
             new Thread(this::receiveFrames).start();
         } catch (Exception e) {
