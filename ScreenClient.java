@@ -42,7 +42,12 @@ public class ScreenClient extends JFrame {
     ScreenPanel panel = new ScreenPanel();
 
     public static void main(String[] args) {
+        int i = 0;
+        while (i<1) {
         new ScreenClient();
+            i++;
+           
+        }
     }
 
     public ScreenClient() {
@@ -67,17 +72,30 @@ public class ScreenClient extends JFrame {
         try {
             DataInputStream bis = new DataInputStream(soc.getInputStream());
             long frameCount = 0;
-            long startTime = System.currentTimeMillis();
 
             while (true) {
-                int n = bis.readInt();            // số byte ảnh
-                byte tmp[] = bis.readNBytes(n);   // đọc dữ liệu ảnh
+            long startTime = System.currentTimeMillis();
+
+            //      long seq = bis.readLong();          // đọc số thứ tự frame
+            // long ts  = bis.readLong();          // đọc timestamp server gửi
+            // int n    = bis.readInt();           // độ dài ảnh
+            // if (n <= 0) continue;               // phòng lỗi
+
+
+               
+            //     byte tmp[] = new byte[n];
+            // bis.readFully(tmp);    
+
+            int n = bis.readInt();
+            byte tmp[] = bis.readNBytes(n);
+               
 
                 long t0 = System.currentTimeMillis();
-                BufferedImage img = ImageIO.read(new ByteArrayInputStream(tmp)); // decode JPEG
+                // System.out.println("time: " + (t0 - startTime));
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(tmp)); 
                 long decodeTime = System.currentTimeMillis() - t0;
 
-                panel.frame = img;  // lưu frame mới
+                panel.frame = img;  
                 frameCount++;
 
             
@@ -85,6 +103,7 @@ public class ScreenClient extends JFrame {
                     long elapsed = (System.currentTimeMillis() - startTime) / 1000;
                     double fps = (double) frameCount / elapsed;
                     System.out.println("[CLIENT] Frames=" + frameCount +
+                    
                             " | size=" + (tmp.length / 1024) + " KB" +
                                 " | decode=" + decodeTime + " ms" +
                             " | FPS≈" + String.format("%.2f", fps));
